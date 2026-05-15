@@ -8,6 +8,13 @@ Claude Code follows to install and configure the migrador on an analyst's Mac.
 No scripts to download or trust — everything is in markdown, and Claude
 executes the steps live so you can see (and stop) every action.
 
+## 🖼️ Guia visual com screenshots
+
+Se você prefere um passo-a-passo visual antes de começar, abra:
+**https://lucasrannye-droid.github.io/hubla-installer/**
+
+(Mesmo conteúdo do passo-a-passo abaixo, com terminais simulados e botões de copiar.)
+
 ## How to use it (for Hubla analysts)
 
 1. **Sign up at [claude.ai](https://claude.ai)** with your corporate email

@@ -1,5 +1,7 @@
 # hubla-installer
 
+> ⚠️ **macOS 12+ only.** O migrador **não roda em Windows nem em Linux**. Se você está em Windows, pegue um Mac emprestado ou solicite ao time de TI antes de continuar. Adaptar pra Windows não está no roadmap (motivo técnico: o instalador depende do Keychain do macOS e do Homebrew).
+
 Public installer instructions for the **hubla-migrador** squad (a private repo
 operated by analysts at [Hubla](https://hub.la)).
 

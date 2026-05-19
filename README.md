@@ -1,6 +1,7 @@
 # hubla-installer
 
-> ⚠️ **macOS 12+ only.** O migrador **não roda em Windows nem em Linux**. Se você está em Windows, pegue um Mac emprestado ou solicite ao time de TI antes de continuar. Adaptar pra Windows não está no roadmap (motivo técnico: o instalador depende do Keychain do macOS e do Homebrew).
+> ✅ **macOS 12+ ou Windows 10 (1809+)/11.** Linux não é suportado.
+> No Windows o setup pede 2 cookies via F12 (Chrome v127+ bloqueia leitura externa). No Mac é tudo automático.
 
 Public installer instructions for the **hubla-migrador** squad (a private repo
 operated by analysts at [Hubla](https://hub.la)).
@@ -22,11 +23,18 @@ Se você prefere um passo-a-passo visual antes de começar, abra:
 1. **Sign up at [claude.ai](https://claude.ai)** with your corporate email
    `firstname.lastname@hub.la`. The Hubla SSO creates the account.
 
-2. **Install Claude Code** in your Terminal:
+2. **Install Claude Code**:
 
+   macOS (Terminal):
    ```bash
    curl -fsSL https://claude.ai/install.sh | bash
    claude login    # browser login with the same @hub.la email
+   ```
+
+   Windows (PowerShell):
+   ```powershell
+   irm https://claude.ai/install.ps1 | iex
+   claude login
    ```
 
 3. **Log into Chrome** at https://app.hub.la with the producer account that
@@ -50,7 +58,9 @@ Se você prefere um passo-a-passo visual antes de começar, abra:
 
 ## Platform
 
-macOS 12+ only. Windows and Linux are not supported.
+macOS 12+ or Windows 10 (1809+)/11. Linux is not supported. The Windows path
+asks the user to paste 2 cookies via F12 (Chrome v127+ blocks external
+cookie decryption with app-bound encryption).
 
 ## Repository contents
 

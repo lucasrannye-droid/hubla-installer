@@ -363,14 +363,14 @@
   <p>Configure tudo do zero e rode migrações automáticas de áreas de membros para a Hubla.</p>
 </div>
 
-<!-- ═══════════════════ MAC-ONLY GATE ═══════════════════ -->
+<!-- ═══════════════════ PLATAFORMAS SUPORTADAS ═══════════════════ -->
 <div class="container" style="margin-top: 24px;">
-  <div class="callout warn" style="border: 2px solid var(--warning); padding: 20px; font-size: 16px;">
-    <div class="callout-icon" style="font-size: 28px;">🖥️</div>
+  <div class="callout" style="border: 2px solid var(--info); padding: 20px; font-size: 16px;">
+    <div class="callout-icon" style="font-size: 28px;">💻</div>
     <div class="callout-text">
-      <strong style="font-size: 18px;">Pré-requisito obrigatório: Mac (macOS 12 ou superior).</strong><br>
-      O migrador <strong>não roda em Windows nem em Linux</strong>. Se você está em Windows, pegue um Mac emprestado, peça um pro time de TI, ou solicite acesso temporário a um Mac da Hubla antes de seguir.<br><br>
-      <span style="color: var(--text-muted);">Motivo técnico: o instalador extrai credenciais do Chrome usando o Keychain do macOS e roda scripts via Homebrew. Adaptar pra Windows exige reescrita não-trivial e não está no roadmap.</span>
+      <strong style="font-size: 18px;">Plataformas suportadas: macOS 12+ e Windows 10/11.</strong><br>
+      Linux não é suportado.<br><br>
+      <span style="color: var(--text-muted);">No Mac o setup é zero-click (lê credenciais do Chrome via Keychain). No Windows o setup pede 2 cookies via F12 (Chrome v127+ bloqueia leitura externa). Mesmo prompt no Claude, mesmo fluxo geral nos dois.</span>
     </div>
   </div>
 </div>
@@ -454,6 +454,7 @@
       <div class="step-badge">2</div>
       <div class="step-name">Cole o comando de instalação</div>
     </div>
+    <div class="step-desc"><strong>macOS</strong> (no Terminal):</div>
     <div class="terminal">
       <div class="terminal-bar">
         <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
@@ -465,9 +466,20 @@
         <span class="output" style="color: var(--success);">✓ Claude Code installed successfully!</span>
       </div>
     </div>
+    <div class="step-desc" style="margin-top: 16px;"><strong>Windows</strong> (no PowerShell):</div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
+        <div class="terminal-title">PowerShell</div>
+      </div>
+      <button class="copy-btn" onclick="copyCmd(this, 'irm https://claude.ai/install.ps1 | iex')">📋 Copiar</button>
+      <div class="terminal-body">
+        <span class="prompt">PS&gt;</span> <span class="cmd">irm https://claude.ai/install.ps1 | iex</span>
+      </div>
+    </div>
     <div class="callout">
       <div class="callout-icon">📦</div>
-      <div class="callout-text">Instalador oficial da Anthropic. Leva ~1 min.</div>
+      <div class="callout-text">Instalador oficial da Anthropic. Leva ~1 min nos 2 SO.</div>
     </div>
   </div>
 
@@ -546,15 +558,21 @@
     </div>
     <div class="step-desc" style="margin-top: 16px;">O Claude vai:</div>
     <ul class="checklist">
+      <li><div class="check">✓</div>Detectar seu SO (macOS ou Windows)</li>
       <li><div class="check">✓</div>Autenticar no GitHub via navegador (se não tiver conta, cria com @hub.la na hora)</li>
       <li><div class="check">✓</div>Clonar o repo hubla-migrador na sua máquina</li>
-      <li><div class="check">✓</div>Rodar o instalador (Homebrew, Python, deps)</li>
-      <li><div class="check">✓</div>Extrair credenciais do Chrome (cookie + token) sozinho</li>
+      <li><div class="check">✓</div>Rodar o instalador (Homebrew no Mac / winget no Windows, Python, deps)</li>
+      <li><div class="check">✓</div><strong>No Mac:</strong> extrair credenciais do Chrome sozinho via Keychain</li>
+      <li><div class="check">✓</div><strong>No Windows:</strong> pedir que você copie 2 cookies via F12 (Chrome bloqueia leitura externa)</li>
       <li><div class="check">✓</div>Confirmar que está tudo pronto</li>
     </ul>
     <div class="callout">
       <div class="callout-icon">🤝</div>
       <div class="callout-text">Se aparecer "acesso negado ao repo": copie a mensagem que o Claude mostra e mande no Slack pro Lucas adicionar você como colaborador.</div>
+    </div>
+    <div class="callout warn" style="margin-top: 12px;">
+      <div class="callout-icon">🪟</div>
+      <div class="callout-text"><strong>Windows:</strong> quando o setup_doctor pedir um cookie, abra <code>app.hub.la</code> no Chrome, F12 → Application → Cookies → hub.la → copie o campo <strong>Value</strong> e cole no terminal. Vai pedir 2 vezes (<code>hubla_device_data</code> e <code>__session</code>).</div>
     </div>
   </div>
 

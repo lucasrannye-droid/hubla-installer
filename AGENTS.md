@@ -196,7 +196,7 @@ cd "$HOME/Hubla/squads/hubla-migrador" && bash install.sh --non-interactive
 🪟 **Windows**:
 ```powershell
 Set-Location "$env:USERPROFILE\Hubla\squads\hubla-migrador"
-powershell -ExecutionPolicy Bypass -File install.ps1 -NonInteractive
+powershell.exe -ExecutionPolicy Bypass -NoProfile -File install.ps1 -NonInteractive
 ```
 
 This will:
@@ -205,11 +205,17 @@ This will:
 - Create `.env` from `.env.example` if missing.
 - Run `scripts/setup_doctor.py`.
 
+> ⚠️ **Importante no Windows:** o `setup_doctor.py` vai PAUSAR pedindo
+> que o usuário cole 2 cookies. Quando isso acontecer, **espere**: o
+> usuário precisa abrir Chrome, copiar via F12, colar no terminal. Não
+> interrompa o processo. Forneça as instruções do passo 8 abaixo
+> enquanto ele copia.
+
 ### 8. Handle setup_doctor outcome
 
-On macOS, `setup_doctor.py` extracts cookies automatically from the Keychain.
-If it succeeded, move on to step 9. If it failed (cookies not found), tell
-the user:
+🍎 **On macOS**, `setup_doctor.py` extracts cookies automatically from the
+Keychain. If it succeeded, move on to step 9. If it failed (cookies not
+found), tell the user:
 
 > ⚠️ Não consegui ler as credenciais do Chrome.
 >
@@ -217,26 +223,34 @@ the user:
 > 2. Faça login com a conta do **produtor que vai receber a migração**
 > 3. Me avise pra continuar — vou rodar a extração de novo
 
-🪟 **On Windows**, `setup_doctor.py` will pause and prompt the user to copy
-2 cookies via F12 (`hubla_device_data` and `__session`). Tell the user
-when this happens:
+🪟 **On Windows**, `setup_doctor.py` will pause and prompt the user to
+paste 2 cookies via F12 (`hubla_device_data` and `__session`). **BEFORE**
+you invoke `install.ps1`, tell the user this verbatim:
 
-> 📋 No Windows o Chrome bloqueia leitura externa de cookies. Vou pedir 2
-> cookies pra você copiar:
+> 📋 **Atenção — Windows precisa de 2 inputs manuais.**
 >
-> 1. Quando aparecer "Preciso do cookie hubla_device_data": abra
->    https://app.hub.la no Chrome, F12 → Application → Cookies → hub.la →
->    cookie `hubla_device_data` → copia o **Value** → cola no terminal.
-> 2. Repete pro cookie `__session` quando ele pedir.
+> Daqui a uns 2-3 minutos, quando o instalador rodar o setup_doctor, o
+> terminal vai pausar e pedir 2 cookies. Quando isso acontecer:
 >
-> O setup_doctor valida cada um antes de aceitar.
+> 1. Cookie **`hubla_device_data`**:
+>    - Abra https://app.hub.la no Chrome (logado com a conta de destino)
+>    - F12 → aba **Application** → painel esquerdo: **Storage → Cookies → https://hub.la**
+>    - Clique no cookie `hubla_device_data`
+>    - Copie o campo **Value** inteiro e cole no terminal, tecla Enter
+>
+> 2. Cookie **`__session`** (logo depois): mesmo procedimento
+>
+> Eu fico esperando — não vou interromper o processo. Quando você colar
+> os dois e o setup confirmar "✓ Token válido", continuamos.
 
-If `setup_doctor.py` exited non-zero after the prompts (invalid cookies,
-3 tentativas), tell the user to re-run:
-```
-cd ~/Hubla/squads/hubla-migrador && python3 scripts/setup_doctor.py
-```
-(or `.venv\Scripts\python scripts\setup_doctor.py` on Windows).
+**While the script is waiting for input, DO NOT cancel, retry, or restart
+it.** It looks "stuck" but it's just waiting for the user to paste the
+cookie value. Wait for the user to interact.
+
+If `setup_doctor.py` exited non-zero (3 tentativas inválidas), tell the
+user to re-run:
+- macOS: `cd ~/Hubla/squads/hubla-migrador && python3 scripts/setup_doctor.py`
+- Windows: `cd $env:USERPROFILE\Hubla\squads\hubla-migrador; .venv\Scripts\python scripts\setup_doctor.py`
 
 ### 9. Final readiness check
 
@@ -291,6 +305,13 @@ already done.
   repo is denied, show the Slack message and wait.
 - Don't try to bypass Windows app-bound encryption — the manual F12 path in
   setup_doctor.py is the supported flow for Windows.
+- **On Windows, don't kill or restart `install.ps1` while it appears
+  "stuck"** — when `setup_doctor.py` waits for cookie input, the install
+  script is paused intentionally. Wait for the user to paste the cookie.
+- On Windows, **always invoke install.ps1 with `powershell.exe
+  -ExecutionPolicy Bypass -NoProfile -File install.ps1 -NonInteractive`**.
+  Don't try to dot-source or `Invoke-Expression` — those break interactive
+  prompts. The recommended invocation is tested and works.
 
 ---
 
